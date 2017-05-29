@@ -111,8 +111,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="advinput.cpp" />
     <ClCompile Include="arrays.cpp" />
-    <ClCompile Include="io.cpp" />
+    <ClCompile Include="files.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="occurences.cpp" />
@@ -120,9 +121,10 @@
     <ClCompile Include="sort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="advinput.h" />
     <ClInclude Include="arrays.h" />
     <ClInclude Include="avltree.h" />
-    <ClInclude Include="io.h" />
+    <ClInclude Include="files.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="occurences.h" />
     <ClInclude Include="polishnotation.h" />

@@ -4,7 +4,8 @@
 #include "avltree.h"
 #include "arrays.h"
 #include "sort.h"
-#include "io.h"
+#include "advinput.h"
+#include "files.h"
 #include "polishnotation.h"
 
 // Menu page selector
@@ -21,7 +22,7 @@ enum selector
 	ASize, AFillManual, AFillRandom, APrint,
 	SearchKMP, SearchBM, SearchRK,
 	TChangeFile, TPrintStatus, TPrintResults,
-	AVLAddRandom, AVLAddManual, AVLDelete, AVLPrint
+	AVLAddRandom, AVLAddManual, AVLDelete, AVLPrint, AVLDestroy
 };
 
 enum status

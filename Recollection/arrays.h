@@ -1,7 +1,7 @@
 #pragma once
 #include <time.h>
 #include <iostream>
-#include "io.h"
+#include "advinput.h"
 
 /*
 Change array size. Also destroys the existing array.

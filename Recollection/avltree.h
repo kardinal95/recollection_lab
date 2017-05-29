@@ -3,7 +3,7 @@
 using namespace std;
 
 /*
-Structure for storing tree elements
+Structure for storing tree elements.
 */
 template<typename T>
 struct Tree
@@ -16,11 +16,9 @@ struct Tree
 };
 
 /*
-Supporting function for creating new tree node
-Input:
-data - pointer to data
-Output:
-created node
+Supporting function for creating new tree node.
+Params: data - pointer to data.
+Returns created node.
 */
 template<typename T>
 Tree<T> *make_node(T *data)
@@ -35,11 +33,9 @@ Tree<T> *make_node(T *data)
 }
 
 /*
-Get pointer to subtree of given node with max weight
-Input:
-root - top subtree node
-Output:
-top node of subtree with maximum weight (NULL if none)
+Get pointer to subtree of given node with max weight.
+Params: root - top subtree node.
+Returns top node of subtree with maximum weight (NULL if none).
 */
 template<typename T>
 Tree<T> *get_max_subtree(Tree<T> *root)
@@ -68,11 +64,9 @@ Tree<T> *get_max_subtree(Tree<T> *root)
 }
 
 /*
-Get weight of current node. Depends on its subtrees
-Input:
-root - top subtree node
-Output:
-node weight
+Get weight of current node. Depends on its subtrees.
+Params: root - top subtree node.
+Returns node weight.
 */
 template<typename T>
 int get_weight(Tree<T> *root)
@@ -90,11 +84,9 @@ int get_weight(Tree<T> *root)
 }
 
 /*
-Check if the current node is balanced (difference in weights is no more than 1)
-Input:
-root - top subtree node
-Output:
-true if balanced, false if not
+Check if the current node is balanced (difference in weights is no more than 1).
+Params: root - top subtree node.
+Returns true if balanced, false if not.
 */
 template<typename T>
 bool is_balanced(Tree<T> *root)
@@ -129,9 +121,8 @@ bool is_balanced(Tree<T> *root)
 }
 
 /*
-Destroy the given node (empty memory)
-Input:
-node - node to destroy
+Destroy the given node (empty memory).
+Params: node - node to destroy
 */
 template <typename T>
 void destroy_node(Tree<T>* node)
@@ -141,11 +132,9 @@ void destroy_node(Tree<T>* node)
 }
 
 /*
-Get node of given tree with minimum parameter (leftmost)
-Input:
-root - top subtree node
-Output:
-the node found (NULL if empty tree given)
+Get node of given tree with minimum parameter (leftmost).
+Params: root - top subtree node.
+Returns the node found (NULL if empty tree given).
 */
 template <typename T>
 Tree<T> *get_minimum(Tree<T>* root)
@@ -160,11 +149,9 @@ Tree<T> *get_minimum(Tree<T>* root)
 }
 
 /*
-Delete node of given tree with minimum parameter (leftmost)
-Input:
-root - top subtree node
-Output:
-tne new top node (NULL if empty)
+Delete node of given tree with minimum parameter (leftmost).
+Params: root - top subtree node.
+Returns tne new top node (NULL if empty).
 */
 template <typename T>
 Tree<T> *delete_minimum(Tree<T>* root)
@@ -187,12 +174,27 @@ Tree<T> *delete_minimum(Tree<T>* root)
 }
 
 /*
-Insert new node into the tree. Rearrange all the nodes accordint to AVL tree rules
-Input:
-root - top subtree node
-node - node to add into the tree
-Output:
-top node of resulting tree
+Destroy tree completely.
+Params: root - top subtree node.
+*/
+template <typename T>
+void destroy_tree(Tree<T>* root)
+{
+	if (root != NULL)
+	{
+		delete[] root->data;
+		destroy_tree(root->left);
+		destroy_tree(root->right);
+		root->left = NULL;
+		root->right = NULL;
+		delete root;
+	}
+}
+
+/*
+Insert new node into the tree. Rearrange all the nodes accordint to AVL tree rules.
+Params: root - top subtree node, node - node to add into the tree.
+Returns top node of resulting tree.
 */
 template<typename T>
 Tree<T> *insert_node(Tree<T> *root, Tree<T> *node)
@@ -223,12 +225,9 @@ Tree<T> *insert_node(Tree<T> *root, Tree<T> *node)
 
 /*
 Remove node with given data from given tree.
-Returns the same tree if the element cannot be found
-Input:
-root - top subtree node
-data - value in node to delete
-Output:
-top node of resulting tree
+Returns the same tree if the element cannot be found.
+Params: root - top subtree node, data - value in node to delete.
+Returns top node of resulting tree.
 */
 template <typename T>
 Tree<T> *remove_node(Tree<T> *root, T* data)
@@ -269,9 +268,8 @@ Tree<T> *remove_node(Tree<T> *root, T* data)
 }
 
 /*
-Perform left rotation of tree
-Input:
-root, child, grandchild - key nodes
+Perform left rotation of tree.
+Params: root, child, grandchild - key nodes.
 */
 template<typename T>
 void left_rotate(Tree<T> *root, Tree<T> *child, Tree<T> *grandchild)
@@ -293,9 +291,8 @@ void left_rotate(Tree<T> *root, Tree<T> *child, Tree<T> *grandchild)
 }
 
 /*
-Perform left rotation of tree
-Input:
-root, child, grandchild - key nodes
+Perform left rotation of tree.
+Params: root, child, grandchild - key nodes.
 */
 template<typename T>
 void right_rotate(Tree<T> *root, Tree<T> *child, Tree<T> *grandchild)
@@ -317,11 +314,9 @@ void right_rotate(Tree<T> *root, Tree<T> *child, Tree<T> *grandchild)
 }
 
 /*
-Rearrange the unbalanced tree (AVL type)
-Input:
-root - top subtree node
-Output:
-rearranged tree top node
+Rearrange the unbalanced tree (AVL type).
+Params: root - top subtree node.
+Returns rearranged tree top node.
 */
 template<typename T>
 Tree<T> *rearrange_tree(Tree<T> *root)
@@ -374,3 +369,61 @@ Tree<T> *rearrange_tree(Tree<T> *root)
 	}
 	return newroot;
 }
+
+// Creation of avl tree
+
+/*
+Add multiple nodes into existing tree.
+Params: root - top subtree node (may be NULL), random - random value input flag
+Returns 1 on input error in element count.
+*/
+template <typename T>
+int add_elements(Tree<T>* & root, bool random)
+{
+	int result = 0;
+	srand((unsigned)time(NULL));
+
+	int count = 0;
+	printf_s("How many elements do you want to add? ");
+	if (!get_integer(count) || count < 0) result = 1;
+	else
+	{
+		for (int i = 0; i < count; i++)
+		{
+			int* data = new int;
+			if (random) *data = (rand());
+			else
+			{
+				printf_s("Enter element number %d value: ", i + 1);
+				while (!get_integer(*data)) printf_s("Incorrect. Try again: ");
+			}
+			Tree<int>* node = make_node(data);
+			root = insert_node(root, node);
+		}
+	}
+	return result;
+}
+
+// Tree print
+
+/*
+Print a tree in specific format.
+Params: root - top subtree node.
+*/
+template <typename T>
+void print_tree(Tree<T>* root)
+{
+	if (root != NULL)
+	{
+		// Print the element and its children. Go recursively
+		cout << "Element: " << *root->data << endl;
+		cout << "Children: ";
+		if (root->left == NULL)	cout << "L: none, ";
+		else cout << "L: " << *root->left->data << ", ";
+		if (root->right == NULL) cout << "R: none.\n";
+		else cout << "R: " << *root->right->data << ".\n";
+
+		print_tree(root->left);
+		print_tree(root->right);
+	}
+};

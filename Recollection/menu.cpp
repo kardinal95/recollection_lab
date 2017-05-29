@@ -40,7 +40,8 @@ status draw_menu(menu_page page)
 		printf_s("1 - Add elements (random),\n");
 		printf_s("2 - Add elements (manual),\n");
 		printf_s("3 - Delete element,\n");
-		printf_s("4 - Print tree,\n");
+		printf_s("4 - Destroy tree,\n");
+		printf_s("5 - Print tree,\n");
 		printf_s("0 - Return.\n");
 		break;
 	default:
@@ -111,7 +112,8 @@ status get_selection(selector & select, menu_page & page)
 			case 1: select = AVLAddRandom; break;
 			case 2: select = AVLAddManual; break;
 			case 3: select = AVLDelete; break;
-			case 4: select = AVLPrint; break;
+			case 4: select = AVLDestroy; break;
+			case 5: select = AVLPrint; break;
 			case 0: page = Main; break;
 			default: stat = WrongCommand; break;
 			}
@@ -176,7 +178,7 @@ status make_action(selector select, FILE* & text, char* & filename, Occurence* &
 	status stat = Success;
 	switch (select)
 	{
-	case TPrintStatus: print_status(text, filename, core); break;
+	case TPrintStatus: search_status(text, filename, core); break;
 	case TChangeFile:
 		change_file(text, filename);
 		if (text == NULL) stat = FileNotOpened;
@@ -187,6 +189,7 @@ status make_action(selector select, FILE* & text, char* & filename, Occurence* &
 		if (text == NULL) stat = FileIsNull;
 		else
 		{
+			printf_s("Enter substring to search: ");
 			char* substring = get_substring();
 			if (strlen(substring) == 0) stat = EmptySubstring;
 			else
@@ -218,8 +221,22 @@ status make_action(selector select, Tree<int>* & root)
 	status stat = Success;
 	switch (select)
 	{
-	case AVLAddRandom: add_elements(root, true); break;
-	case AVLAddManual: add_elements(root, false); break;
+	case AVLAddRandom:
+	{
+		int result = add_elements(root, true);
+		if (result == 1) stat = InputValueError;
+		break;
+	}
+	case AVLAddManual:
+	{
+		int result = add_elements(root, false);
+		if (result == 1) stat = InputValueError;
+		break;
+	}
+	case AVLDestroy:
+		destroy_tree(root);
+		root = NULL;
+		break;
 	case AVLDelete:
 	case AVLPrint:
 		if (root == NULL) stat = EmptyTree;
