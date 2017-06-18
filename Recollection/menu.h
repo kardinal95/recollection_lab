@@ -11,7 +11,7 @@
 // Menu page selector
 enum menu_page
 {
-	Main, Sort, Search, AVL
+	Main, Sort, Search, AVL, Polish
 };
 
 // Action selector
@@ -22,13 +22,15 @@ enum selector
 	ASize, AFillManual, AFillRandom, APrint,
 	SearchKMP, SearchBM, SearchRK,
 	TChangeFile, TPrintStatus, TPrintResults,
-	AVLAddRandom, AVLAddManual, AVLDelete, AVLPrint, AVLDestroy
+	AVLAddRandom, AVLAddManual, AVLDelete, AVLPrint, AVLDestroy,
+	PolishEncodeR, PolishEncode, PolishCalculate, PolishPrint
 };
 
 enum status
 {
 	Success, CriticalError, WrongCommand, EmptyArray, FileNotOpened,
-	FileIsNull, EmptySubstring, EmptyTree, InputValueError, LessThanZero
+	FileIsNull, EmptySubstring, EmptyTree, InputValueError, LessThanZero,
+	IncorrectExpression, NoExpressionStored
 };
 
 /*
@@ -66,6 +68,13 @@ Params: select - selected action, root - pointer to tree<int> root.
 Returns status.
 */
 status make_action(selector select, Tree<int>* & root);
+
+/*
+Action handling for Polish notation.
+Params: select - selected action, top, bottom - pointers for Queue, reverse - reverse notation flag.
+Returns status.
+*/
+status make_action(selector select, Queue<char>* & top, Queue<char>* & bot, bool & reverse);
 
 /*
 Error handling. Exits program with code 1 on critical.

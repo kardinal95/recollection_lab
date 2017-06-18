@@ -117,6 +117,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="occurences.cpp" />
+    <ClCompile Include="polishnotashion.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="sort.cpp" />
   </ItemGroup>
@@ -128,8 +129,10 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="occurences.h" />
     <ClInclude Include="polishnotation.h" />
+    <ClInclude Include="queue.h" />
     <ClInclude Include="search.h" />
     <ClInclude Include="sort.h" />
+    <ClInclude Include="stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,6 +21,10 @@ void main()
 
 	Tree<int>* root = NULL;
 
+	Queue<char>* top = NULL;
+	Queue<char>* bot = NULL;
+	bool reverse = true;
+
 	do
 	{
 		// Clear old info
@@ -34,6 +38,10 @@ void main()
 			break;
 		case Search:
 			make_action(TPrintStatus, text, filename, core);
+			printf_s("\n");
+			break;
+		case Polish:
+			make_action(PolishPrint, top, bot, reverse);
 			printf_s("\n");
 			break;
 		// Nothing on other pages
@@ -56,6 +64,7 @@ void main()
 			case Sort: stat = make_action(select, size, array); break;
 			case Search: stat = make_action(select, text, filename, core); break;
 			case AVL: stat = make_action(select, root);	break;
+			case Polish: stat = make_action(select, top, bot, reverse);	break;
 			}
 		}
 		

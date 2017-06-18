@@ -44,6 +44,12 @@ status draw_menu(menu_page page)
 		printf_s("5 - Print tree,\n");
 		printf_s("0 - Return.\n");
 		break;
+	case Polish:
+		printf_s("1 - Encode input (reverse),\n");
+		printf_s("2 - Encode input (normal),\n");
+		printf_s("3 - Calculate encoded expression,\n");
+		printf_s("0 - Return.\n");
+		break;
 	default:
 		stat = CriticalError;
 		break;
@@ -75,6 +81,7 @@ status get_selection(selector & select, menu_page & page)
 			case 1:	page = Sort; break;
 			case 2:	page = Search; break;
 			case 3:	page = AVL;	break;
+			case 4:	page = Polish;	break;
 			case 0:	select = Exit; break;
 			default: stat = WrongCommand; break;
 			}
@@ -114,6 +121,16 @@ status get_selection(selector & select, menu_page & page)
 			case 3: select = AVLDelete; break;
 			case 4: select = AVLDestroy; break;
 			case 5: select = AVLPrint; break;
+			case 0: page = Main; break;
+			default: stat = WrongCommand; break;
+			}
+			break;
+		case Polish:
+			switch (choice)
+			{
+			case 1: select = PolishEncodeR; break;
+			case 2: select = PolishEncode; break;
+			case 3: select = PolishCalculate; break;
 			case 0: page = Main; break;
 			default: stat = WrongCommand; break;
 			}
@@ -264,6 +281,54 @@ status make_action(selector select, Tree<int>* & root)
 	return stat;
 }
 
+/*
+Action handling for Polish notation.
+Params: select - selected action, top, bottom - pointers for Queue, reverse - reverse notation flag.
+Returns status.
+*/
+status make_action(selector select, Queue<char>* & top, Queue<char>* & bot, bool & reverse)
+{
+	status stat = Success;
+	switch (select)
+	{
+	case PolishEncodeR:
+	case PolishEncode:
+	{
+		char* input = get_substring();
+		while (top != NULL)	pop(top, bot);
+		bool error = false;
+		switch (select)
+		{
+		case PolishEncode: reverse = false; error = !encode(top, bot, input); break;
+		case PolishEncodeR: reverse = true; error = !encode_reverse(top, bot, input); break;
+		default: stat = CriticalError; break;
+		}
+		if (error) stat = IncorrectExpression;
+		break;
+	}
+	case PolishCalculate:
+	{
+		if (top == NULL) stat = NoExpressionStored;
+		else
+		{
+			int result;
+			if (reverse) result = calculate_reverse(top, bot);
+			else result = calculate(top, bot);
+			printf_s("Calculated result: %d\n", result);
+			system("Pause");
+		}
+		break;
+	}
+	case PolishPrint:
+		if (reverse) print_encoded_reverse(top, bot);
+		else print_encoded(top, bot);
+		break;
+	case Pass: break;
+	default: stat = CriticalError; break;
+	}
+	return stat;
+}
+
 void error_handler(status stat)
 {
 	bool force_exit = false;
@@ -283,6 +348,8 @@ void error_handler(status stat)
 	case EmptyTree: printf_s("Current tree is empty!\n"); break;
 	case InputValueError: printf_s("Error in input value!\n"); break;
 	case LessThanZero: printf_s("Value cannot be less than zero!\n"); break;
+	case IncorrectExpression: printf_s("Error in input expression!\n"); break;
+	case NoExpressionStored: printf_s("No encoded expression! Please encode expression first!\n"); break;
 	default:
 		printf_s("Critical error found! Program will be closed!\n");
 		force_exit = true;
